@@ -5,6 +5,12 @@ export default class Courses extends React.Component{
     constructor(props)
     {
         super(props);
+        this.state = {
+            groupBy: 'year',
+            sortBy: 'grade'
+        }
+        this.groups = ['year', 'school', 'season', ];
+        this.sorts = ['grade', 'alpha']
         this.groupingByYear();
     }
 
@@ -41,6 +47,8 @@ export default class Courses extends React.Component{
 
     render()
     {
+
+
         let courses = this.props.courses.map((v,i) => {
             return <tr key={v.id}>
                 <td>{v.year}</td>

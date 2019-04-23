@@ -4,6 +4,7 @@ import Courses from "./components/Courses";
 import Header from './components/Header';
 import 'bulma/css/bulma.css';
 import Course from './models/Course';
+import Stats from "./components/Stats";
 
 class App extends Component {
 
@@ -12,7 +13,7 @@ class App extends Component {
         super(props);
         this.state = {
             courseUrl: 'http://localhost:8080/course',
-            loaded: false
+            loaded: false,
         };
     }
 
@@ -32,6 +33,7 @@ class App extends Component {
 
     render() {
         let courses = this.state.loaded ? <Courses courses={this.state.courses}/> : '';
+        let stats = this.state.loaded ? <Stats courses={this.state.courses}/> : '';
 
         return (
             <div className="App container">
@@ -39,6 +41,8 @@ class App extends Component {
                     <Header></Header>
                 </header>
                 {courses}
+                <br/>
+                {stats}
             </div>
         );
     }
