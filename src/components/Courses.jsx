@@ -8,10 +8,10 @@ export default class Courses extends React.Component{
         this.state = {
             groupBy: 'year',
             sortBy: 'grade',
-            courses: this.props.courses
+            courses: this.props.courses,
+            sortCols: ['d', 'd', 'd', 'd', 'd', 'd']
         }
         this.groups = ['year', 'school', 'season', ];
-        this.sortCols = ['d', 'd', 'd', 'd', 'd', 'd', 'd'];
         this.groupingByYear();
 
         this.sortBy = this.sortBy.bind(this);
@@ -50,16 +50,30 @@ export default class Courses extends React.Component{
 
     sortBy(field, col)
     {
+        let sortCols = this.state.sortCols;
         let sortedCourses = this.state.courses.sort((x,y) => {
-            return x[field] > y[field];
+            if(x[field] < y[field])
+                return 1;
+            if (x[field] > y[field])
+                return -1;
+
+            if (x.year > y.year)
+                return -1;
+            if (x.year < y.year)
+                return 1;
         });
-        this.sortCols[col] = 'd';
-        if (this.sortCols[col] === 'd')
+
+        if (this.state.sortCols[col] == 'd')
+        {
+            sortCols[col] = 'u';
+            this.setState({courses: sortedCourses, sortCols: sortCols});
+        }
+        else if (this.state.sortCols[col] === 'u')
         {
             sortedCourses.reverse();
-            this.sortCols[col] = 'u';
+            sortCols[col] = 'd';
+            this.setState({courses: sortedCourses, sortCols: sortCols});
         }
-        this.setState({courses: sortedCourses});
     }
 
     render()
@@ -71,7 +85,6 @@ export default class Courses extends React.Component{
                 <td>{v.school.acronim}</td>
                 <td>{v.courseCode}</td>
                 <td>{v.courseName}</td>
-                <td>{v.schoolYear}</td>
                 <td>{v.grade}</td>
                 <td></td>
             </tr>
@@ -87,8 +100,7 @@ export default class Courses extends React.Component{
                         <th onClick={() => this.sortBy('school', 2)}>School</th>
                         <th onClick={() => this.sortBy('courseCode', 3)}>Code</th>
                         <th onClick={() => this.sortBy('courseName', 4)}>Name</th>
-                        <th onClick={() => this.sortBy('schoolYear', 5)}>School Year</th>
-                        <th onClick={() => this.sortBy('grade', 6)}>Grade</th>
+                        <th onClick={() => this.sortBy('grade', 5)}>Grade</th>
                         <th>Coursework</th>
                     </tr>
                     </thead>
